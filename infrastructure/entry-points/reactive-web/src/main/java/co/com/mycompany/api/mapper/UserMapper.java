@@ -13,7 +13,6 @@ public interface UserMapper {
             return null;
         }
         return new User.Builder()
-                .id(dto.id())
                 .firstName(dto.firstName())
                 .lastName(dto.lastName())
                 .birthDate(dto.birthDate())

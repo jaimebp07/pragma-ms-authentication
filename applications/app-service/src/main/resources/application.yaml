@@ -28,6 +28,6 @@ adapters:
     host: localhost
     port: 5434
     database: users_db
-    schema: public    # el que definiste en tu create_schema.sql (por defecto public)
+    schema: credi_ya
     username: myuser
     password: mypassword

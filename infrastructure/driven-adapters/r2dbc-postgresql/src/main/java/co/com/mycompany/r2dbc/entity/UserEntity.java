@@ -1,25 +1,41 @@
 package co.com.mycompany.r2dbc.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.UUID;
 
-@Entity
-@Table(name = "users")
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.relational.core.mapping.Column;
+
+import lombok.Data;
+
+@Data
+@Table("credi_ya.users")
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY )
-    private String id;
+    @Column("id")
+    private UUID id;
+
+    @Column("first_name")
     private String firstName;
+
+    @Column("last_name")
     private String lastName;
-    private String birthDate;
+
+    @Column("birth_date")
+    private LocalDate birthDate;
+
+    @Column("address")
     private String address;
+
+    @Column("phone_number")
     private String phoneNumber;
-    @Column(unique = true)
+
+    @Column("email")
     private String email;
-    private Double baseSalary;
+
+    @Column("base_salary")
+    private BigDecimal baseSalary;
 }

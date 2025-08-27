@@ -3,7 +3,7 @@ CREATE SCHEMA IF NOT EXISTS credi_ya;
 
 -- Crear tabla users
 CREATE TABLE IF NOT EXISTS credi_ya.users (
-    id UUID PRIMARY KEY,                  -- Equivalente a String pero como UUID
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),                  -- Equivalente a String pero como UUID
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
     birth_date DATE NOT NULL,

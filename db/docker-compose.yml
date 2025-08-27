@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  postgresql: # Host name/address, pgadmin connection
+  postgresql: # Host name/address, pgadmin connection # select * from credi_ya.users;
     image: postgres:16.1
     container_name: crediya_users_db
     restart: always

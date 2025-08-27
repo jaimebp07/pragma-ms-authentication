@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record UserDTO(
-    String id,
     String firstName,
     String lastName,
     LocalDate birthDate,

@@ -6,11 +6,13 @@ import co.com.mycompany.r2dbc.entity.UserEntity;
 import co.com.mycompany.r2dbc.helper.ReactiveAdapterOperations;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserRepositoryAdapter extends ReactiveAdapterOperations<User, UserEntity, String, UserRepository> implements UserRepositoryGetway {
+public class UserRepositoryAdapter extends ReactiveAdapterOperations<User, UserEntity, UUID, UserRepository> implements UserRepositoryGetway {
     
     public UserRepositoryAdapter(UserRepository repository, ObjectMapper mapper) {
         super(repository, mapper, d -> mapper.mapBuilder(d, User.Builder.class).build());
@@ -25,6 +27,4 @@ public class UserRepositoryAdapter extends ReactiveAdapterOperations<User, UserE
     public Mono<User> save(User user) {
         return super.save(user);
     }
-
-
 }
