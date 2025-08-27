@@ -14,11 +14,9 @@ import co.com.mycompany.usecase.registeruser.RegisterUserUseCase;
 public class Handler {
 
     private  final RegisterUserUseCase registerUseCase;
-
     private final UserMapper userMapper;
 
     public Mono<ServerResponse> registerUseCase(ServerRequest serverRequest) {
-
         return serverRequest.bodyToMono(UserDTO.class)
                 .map(userMapper::toDomain)
                 .flatMap(registerUseCase::registerUser)
