@@ -1,14 +1,16 @@
 package co.com.mycompany.config;
 
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
+
+import co.com.mycompany.model.user.gateways.UserRepositoryGetway;
+import co.com.mycompany.usecase.registeruser.RegisterUserUseCase;
 
 @Configuration
-@ComponentScan(basePackages = "co.com.mycompany.usecase",
-        includeFilters = {
-                @ComponentScan.Filter(type = FilterType.REGEX, pattern = "^.+UseCase$")
-        },
-        useDefaultFilters = false)
 public class UseCasesConfig {
+
+        @Bean
+        public RegisterUserUseCase registerUserUseCase(UserRepositoryGetway userRepository) {
+                return new RegisterUserUseCase(userRepository);
+        }
 }
