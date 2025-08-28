@@ -25,8 +25,9 @@ public class RouterRest {
         @RouterOperation(
             path = "/api/v1/usuarios",
             produces = { "application/json" },
+            consumes = { "application/json" },
             beanClass = Handler.class,
-            beanMethod = "registerUseCase",
+            beanMethod = "handleRegisterUser",
             operation = @Operation(
                 operationId = "createUser",
                 summary = "Registrar usuario",
@@ -41,13 +42,13 @@ public class RouterRest {
                     )
                 ),
                 responses = {
-                                    @ApiResponse(responseCode = "201", description = "Usuario creado",
-                                            content = @Content(schema = @Schema(implementation = UserDTO.class))),
-                                    @ApiResponse(responseCode = "400", description = "Error de validación",
-                                        content = @Content(schema = @Schema(implementation = String.class))),
-                                    @ApiResponse(responseCode = "500", description = "Error interno",
-                                        content = @Content(schema = @Schema(implementation = String.class)))
-                            }
+                        @ApiResponse(responseCode = "201", description = "Usuario creado",
+                                content = @Content(schema = @Schema(implementation = UserDTO.class))),
+                        @ApiResponse(responseCode = "400", description = "Error de validación",
+                            content = @Content(schema = @Schema(implementation = String.class))),
+                        @ApiResponse(responseCode = "500", description = "Error interno",
+                            content = @Content(schema = @Schema(implementation = String.class)))
+                }
             )
         )
     })
