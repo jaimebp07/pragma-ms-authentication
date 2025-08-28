@@ -1,6 +1,6 @@
 package co.com.mycompany.r2dbc;
 
-import co.com.mycompany.model.gateways.UserRepositoryGetway;
+import co.com.mycompany.model.gateways.UserRepositoryGateway;
 import co.com.mycompany.model.user.User;
 import co.com.mycompany.r2dbc.entity.UserEntity;
 import co.com.mycompany.r2dbc.helper.ReactiveAdapterOperations;
@@ -12,9 +12,9 @@ import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserRepositoryAdapter extends ReactiveAdapterOperations<User, UserEntity, UUID, UserRepository> implements UserRepositoryGetway {
+public class UserRepositoryAdapter extends ReactiveAdapterOperations<User, UserEntity, UUID, UserReactiveRepository> implements UserRepositoryGateway {
     
-    public UserRepositoryAdapter(UserRepository repository, ObjectMapper mapper) {
+    public UserRepositoryAdapter(UserReactiveRepository repository, ObjectMapper mapper) {
         super(repository, mapper, d -> mapper.mapBuilder(d, User.Builder.class).build());
     }
 

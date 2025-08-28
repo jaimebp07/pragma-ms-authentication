@@ -52,6 +52,6 @@ public class RouterRest {
         )
     })
     public RouterFunction<ServerResponse> routerFunction(Handler handler) {
-        return route(POST("/api/v1/usuarios"), handler::registerUseCase);
+        return route(POST("/api/v1/usuarios"), handler::handleRegisterUser);
     }
 }

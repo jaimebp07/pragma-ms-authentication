@@ -1,15 +1,15 @@
 package co.com.mycompany.usecase.registeruser;
 
 import co.com.mycompany.model.exceptions.BusinessException;
-import co.com.mycompany.model.gateways.UserRepositoryGetway;
+import co.com.mycompany.model.gateways.UserRepositoryGateway;
 import co.com.mycompany.model.user.User;
 import co.com.mycompany.model.user.validator.UserValidator;
 import reactor.core.publisher.Mono;
 
 public class  RegisterUserUseCase {
-    private final UserRepositoryGetway userRepository;
+    private final UserRepositoryGateway userRepository;
 
-    public RegisterUserUseCase(UserRepositoryGetway userRepository) {
+    public RegisterUserUseCase(UserRepositoryGateway userRepository) {
         this.userRepository = userRepository;
     }
 

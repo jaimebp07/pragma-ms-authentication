@@ -4,7 +4,7 @@ import co.com.mycompany.model.user.User;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface UserRepositoryGetway {
+public interface UserRepositoryGateway {
 
     Flux<User> findAll();
     Mono<User> findByEmail(String email);

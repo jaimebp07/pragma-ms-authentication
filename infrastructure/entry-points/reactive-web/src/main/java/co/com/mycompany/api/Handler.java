@@ -17,13 +17,13 @@ import co.com.mycompany.usecase.registeruser.RegisterUserUseCase;
 @RequiredArgsConstructor
 public class Handler {
 
-    private  final RegisterUserUseCase registerUseCase;
+    private  final RegisterUserUseCase registerUserUseCase;
     private final UserMapper userMapper;
 
-    public Mono<ServerResponse> registerUseCase(ServerRequest serverRequest) {
+    public Mono<ServerResponse> handleRegisterUser(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(UserDTO.class)
                 .map(userMapper::toDomain)
-                .flatMap(registerUseCase::registerUser)
+                .flatMap(registerUserUseCase::registerUser)
                 .map(userMapper::toDTO)
                 .flatMap(userDTO -> ServerResponse
                         .created(serverRequest.uri())
