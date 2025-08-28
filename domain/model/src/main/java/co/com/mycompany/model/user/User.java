@@ -5,49 +5,24 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class User {
-    UUID id;  
-    String firstName;  
-    String lastName;  
-    LocalDate birthDate;  
-    String address;  
-    String phoneNumber;  
-    String email;  
-    BigDecimal baseSalary;
+    private final UUID id;
+    private final String firstName;
+    private final String lastName;
+    private final LocalDate birthDate;
+    private final String address;
+    private final String phoneNumber;
+    private final String email;
+    private final BigDecimal baseSalary;
 
     private User(Builder builder) {
         this.id = builder.id;
-        this.firstName = requireNonEmpty(builder.firstName, "First name is required");
-        this.lastName = requireNonEmpty(builder.lastName, "Last name is required");
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
         this.birthDate = builder.birthDate;
         this.address = builder.address;
         this.phoneNumber = builder.phoneNumber;
-        this.email = validateEmail(builder.email);
-        this.baseSalary = validateSalary(builder.baseSalary);
-    }
-
-    private static String requireNonEmpty(String value, String message) {
-        if (value == null || value.trim().isEmpty()) {
-            throw new IllegalArgumentException(message);
-        }
-        return value;
-    }
-
-    private static String validateEmail(String email) {
-        requireNonEmpty(email, "Email is required");
-        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-            throw new IllegalArgumentException("Email format is invalid");
-        }
-        return email;
-    }
-
-    private static BigDecimal validateSalary(BigDecimal salary) {
-        if (salary == null) {
-            throw new IllegalArgumentException("Salary is required");
-        }
-        if (salary.compareTo(BigDecimal.ZERO) < 0 || salary.compareTo(new BigDecimal("15000000")) > 0) {
-            throw new IllegalArgumentException("Salary must be between 0 and 15,000,000");
-        }
-        return salary;
+        this.email = builder.email;
+        this.baseSalary = builder.baseSalary;
     }
 
     public static class Builder {
@@ -82,5 +57,4 @@ public class User {
     public String getPhoneNumber() { return phoneNumber; }
     public String getEmail() { return email; }
     public BigDecimal getBaseSalary() { return baseSalary; }
-
 }

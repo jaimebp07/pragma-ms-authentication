@@ -3,7 +3,7 @@ package co.com.mycompany.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import co.com.mycompany.model.user.gateways.UserRepositoryGetway;
+import co.com.mycompany.model.gateways.UserRepositoryGetway;
 import co.com.mycompany.usecase.registeruser.RegisterUserUseCase;
 
 @Configuration

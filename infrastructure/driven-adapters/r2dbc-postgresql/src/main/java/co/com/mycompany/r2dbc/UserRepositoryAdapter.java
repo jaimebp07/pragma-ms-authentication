@@ -1,7 +1,7 @@
 package co.com.mycompany.r2dbc;
 
+import co.com.mycompany.model.gateways.UserRepositoryGetway;
 import co.com.mycompany.model.user.User;
-import co.com.mycompany.model.user.gateways.UserRepositoryGetway;
 import co.com.mycompany.r2dbc.entity.UserEntity;
 import co.com.mycompany.r2dbc.helper.ReactiveAdapterOperations;
 import reactor.core.publisher.Mono;

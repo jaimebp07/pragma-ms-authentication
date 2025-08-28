@@ -1,7 +1,9 @@
 package co.com.mycompany.usecase.registeruser;
 
+import co.com.mycompany.model.exceptions.BusinessException;
+import co.com.mycompany.model.gateways.UserRepositoryGetway;
 import co.com.mycompany.model.user.User;
-import co.com.mycompany.model.user.gateways.UserRepositoryGetway;
+import co.com.mycompany.model.user.validator.UserValidator;
 import reactor.core.publisher.Mono;
 
 public class  RegisterUserUseCase {
@@ -12,8 +14,16 @@ public class  RegisterUserUseCase {
     }
 
     public Mono<User> registerUser(User user) {
-        return userRepository.findByEmail(user.getEmail())
-                .flatMap(existing -> Mono.<User>error(new IllegalArgumentException("Email already registered")))
-                .switchIfEmpty(userRepository.save(user));
+        return Mono.fromCallable(() -> {
+                    UserValidator.validate(user);
+                    return user;
+                })
+                .flatMap(validUser -> userRepository.findByEmail(validUser.getEmail())
+                        .flatMap(existing -> Mono.<User>error(
+                                new BusinessException("Email already registered")))
+                        .switchIfEmpty(userRepository.save(validUser))
+                )
+                .onErrorMap(IllegalArgumentException.class,
+                        e -> new BusinessException("Validation error: " + e.getMessage()));
     }
 }

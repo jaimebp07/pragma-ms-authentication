@@ -1,4 +1,4 @@
-package co.com.mycompany.model.user.gateways;
+package co.com.mycompany.model.gateways;
 
 import co.com.mycompany.model.user.User;
 import reactor.core.publisher.Flux;
