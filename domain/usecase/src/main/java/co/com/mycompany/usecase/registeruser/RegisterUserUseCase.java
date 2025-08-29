@@ -24,6 +24,7 @@ public class  RegisterUserUseCase {
                         .switchIfEmpty(userRepository.save(validUser))
                 )
                 .onErrorMap(IllegalArgumentException.class,
-                        e -> new BusinessException("Validation error: " + e.getMessage()));
+                        e -> new BusinessException("Validation error: " + e.getMessage())
+                );
     }
 }

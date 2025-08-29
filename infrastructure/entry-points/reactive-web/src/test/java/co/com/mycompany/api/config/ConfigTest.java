@@ -2,11 +2,15 @@ package co.com.mycompany.api.config;
 
 import co.com.mycompany.api.Handler;
 import co.com.mycompany.api.RouterRest;
+import co.com.mycompany.api.mapper.UserMapper;
+import co.com.mycompany.usecase.registeruser.RegisterUserUseCase;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @ContextConfiguration(classes = {RouterRest.class, Handler.class})
@@ -14,13 +18,19 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @Import({CorsConfig.class, SecurityHeadersConfig.class})
 class ConfigTest {
 
+    @MockitoBean 
+    private RegisterUserUseCase registerUserUseCase;
+
+    @MockitoBean
+    private UserMapper userMapper;
+
     @Autowired
     private WebTestClient webTestClient;
 
     @Test
     void corsConfigurationShouldAllowOrigins() {
-        webTestClient.get()
-                .uri("/api/usecase/path")
+        webTestClient.post()
+                .uri("/api/v1/usuarios")
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().valueEquals("Content-Security-Policy",

@@ -1,15 +1,19 @@
 package co.com.mycompany.config;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+
+import co.com.mycompany.model.gateways.UserRepositoryGateway;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class UseCasesConfigTest {
 
-    /*@Test
+    @Test
     void testUseCaseBeansExist() {
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(TestConfig.class)) {
             String[] beanNames = context.getBeanDefinitionNames();
@@ -24,14 +28,19 @@ public class UseCasesConfigTest {
 
             assertTrue(useCaseBeanFound, "No beans ending with 'Use Case' were found");
         }
-    }*/
+    }
 
     @Configuration
     @Import(UseCasesConfig.class)
     static class TestConfig {
 
         @Bean
-        public MyUseCase myUseCase() {
+        UserRepositoryGateway userRepositoryGateway() {
+            return Mockito.mock(UserRepositoryGateway.class);
+        }
+
+        @Bean
+        MyUseCase myUseCase() {
             return new MyUseCase();
         }
     }

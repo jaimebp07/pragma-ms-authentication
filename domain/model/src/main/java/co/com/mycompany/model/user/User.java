@@ -57,4 +57,16 @@ public class User {
     public String getPhoneNumber() { return phoneNumber; }
     public String getEmail() { return email; }
     public BigDecimal getBaseSalary() { return baseSalary; }
+
+    public Builder toBuilder() {
+        return new Builder()
+                .id(this.id)
+                .firstName(this.firstName)
+                .lastName(this.lastName)
+                .birthDate(this.birthDate)
+                .address(this.address)
+                .phoneNumber(this.phoneNumber)
+                .email(this.email)
+                .baseSalary(this.baseSalary);
+    }
 }

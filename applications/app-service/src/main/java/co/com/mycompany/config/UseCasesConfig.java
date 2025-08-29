@@ -10,7 +10,7 @@ import co.com.mycompany.usecase.registeruser.RegisterUserUseCase;
 public class UseCasesConfig {
 
         @Bean
-        public RegisterUserUseCase registerUserUseCase(UserRepositoryGateway userRepository) {
+        RegisterUserUseCase registerUserUseCase(UserRepositoryGateway userRepository) {
                 return new RegisterUserUseCase(userRepository);
         }
 }

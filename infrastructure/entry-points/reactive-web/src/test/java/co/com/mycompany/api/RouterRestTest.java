@@ -1,12 +1,25 @@
 package co.com.mycompany.api;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
+import java.math.BigDecimal;
+import java.net.URI;
+import java.time.LocalDate;
+
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.reactive.function.server.ServerResponse;
+
+import co.com.mycompany.api.dto.UserDTO;
+import reactor.core.publisher.Mono;
 
 
 @ContextConfiguration(classes = {RouterRest.class, Handler.class})
@@ -16,48 +29,41 @@ class RouterRestTest {
     @Autowired
     private WebTestClient webTestClient;
 
-    
-
-    /*@Test
-    void testListenGETUseCase() {
-        webTestClient.get()
-                .uri("/api/usecase/path")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(String.class)
-                .value(userResponse -> {
-                            Assertions.assertThat(userResponse).isEmpty();
-                        }
-                );
-    }
+    @MockitoBean
+    private Handler handler;
 
     @Test
-    void testListenGETOtherUseCase() {
-        webTestClient.get()
-                .uri("/api/otherusercase/path")
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(String.class)
-                .value(userResponse -> {
-                            Assertions.assertThat(userResponse).isEmpty();
-                        }
-                );
-    }
+    void testRegisterUser() {
+        UserDTO userDto = new UserDTO(
+            "Andres",
+            "Lopez",
+            LocalDate.of(1990, 1, 1),
+            "Calle 123",
+            "3001234567",
+            "test@example.com",
+            BigDecimal.valueOf(3000)
+        );
 
-    @Test
-    void testListenPOSTUseCase() {
+        when(handler.handleRegisterUser(any()))
+                .thenReturn(
+                    ServerResponse
+                        .created(URI.create("/api/v1/usuarios"))
+                        .body(Mono.just(userDto), UserDTO.class)
+                    );
+
         webTestClient.post()
-                .uri("/api/usecase/otherpath")
-                .accept(MediaType.APPLICATION_JSON)
-                .bodyValue("")
+                .uri("/api/v1/usuarios")
+                .bodyValue(userDto)
                 .exchange()
-                .expectStatus().isOk()
-                .expectBody(String.class)
-                .value(userResponse -> {
-                            Assertions.assertThat(userResponse).isEmpty();
-                        }
+                .expectStatus().isCreated()
+                .expectBody(UserDTO.class)
+                .consumeWith(response -> {
+                        UserDTO body = response.getResponseBody();
+                        assertNotNull(body);
+                        assertEquals("test@example.com", body.email());
+                        assertEquals("Andres", body.firstName());
+                    }
                 );
-    }*/
+    }
+
 }
