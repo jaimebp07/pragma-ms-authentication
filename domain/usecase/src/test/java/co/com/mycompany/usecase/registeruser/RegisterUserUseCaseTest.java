@@ -2,8 +2,10 @@ package co.com.mycompany.usecase.registeruser;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import co.com.mycompany.model.exceptions.BusinessException;
+import co.com.mycompany.model.gateways.TransactionalGateway;
 import co.com.mycompany.model.gateways.UserRepositoryGateway;
 import co.com.mycompany.model.user.User;
 import reactor.core.publisher.Mono;
@@ -11,6 +13,7 @@ import reactor.test.StepVerifier;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 import java.math.BigDecimal;
@@ -19,13 +22,23 @@ import java.util.UUID;
 
 public class RegisterUserUseCaseTest {
 
-    private UserRepositoryGateway userRepository;
     private RegisterUserUseCase useCase;
+
+    @Mock
+    private UserRepositoryGateway userRepository;
+
+    @Mock
+    private TransactionalGateway transactionalGateway;
 
     @BeforeEach
     void setUp() {
         userRepository = mock(UserRepositoryGateway.class);
-        useCase = new RegisterUserUseCase(userRepository);
+        transactionalGateway = mock(TransactionalGateway.class);
+
+        when(transactionalGateway.execute(any()))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        useCase = new RegisterUserUseCase(userRepository, transactionalGateway);
     }
 
     private User buildUser(String email) {
@@ -52,7 +65,8 @@ public class RegisterUserUseCaseTest {
                 .expectNext(user)
                 .verifyComplete();
 
-        verify(userRepository).findByEmail("andres@test.com");
+        //verify(userRepository).findByEmail("andres@test.com");
+        verify(userRepository).findByEmail(eq("andres@test.com"));
         verify(userRepository).save(user);
     }
 
@@ -60,7 +74,7 @@ public class RegisterUserUseCaseTest {
     void shouldFailWhenEmailAlreadyExists() {
         User existingUser = buildUser("andres@test.com");
 
-        when(userRepository.findByEmail("andres@test.com")).thenReturn(Mono.just(existingUser));
+        when(userRepository.findByEmail(anyString())).thenReturn(Mono.just(existingUser));
         when(userRepository.save(any(User.class))).thenReturn(Mono.empty());
 
         StepVerifier.create(useCase.registerUser(existingUser))

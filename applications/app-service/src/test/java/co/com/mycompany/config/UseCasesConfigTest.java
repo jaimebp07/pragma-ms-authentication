@@ -7,9 +7,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import co.com.mycompany.model.gateways.TransactionalGateway;
 import co.com.mycompany.model.gateways.UserRepositoryGateway;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
 public class UseCasesConfigTest {
 
@@ -37,6 +39,11 @@ public class UseCasesConfigTest {
         @Bean
         UserRepositoryGateway userRepositoryGateway() {
             return Mockito.mock(UserRepositoryGateway.class);
+        }
+
+        @Bean
+        TransactionalGateway transactionalGateway() {
+            return mock(TransactionalGateway.class);
         }
 
         @Bean
