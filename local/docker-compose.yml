@@ -1,15 +1,16 @@
 version: '3.8'
+name: crediya_authentication
 services:
-  postgresql: # Host name/address, pgadmin connection # select * from credi_ya.users;
+  authentication: # Host name/address, pgadmin connection # select * from credi_ya.users;
     image: postgres:16.1
     container_name: crediya_users_db
     restart: always
     environment:
-      POSTGRES_USER: myuser # Username, pgadmin connection
-      POSTGRES_PASSWORD: mypassword # Password, pgadmin connection
-      POSTGRES_DB: users_db
+      POSTGRES_USER: admin # Username, pgadmin connection
+      POSTGRES_PASSWORD: authentication # Password, pgadmin connection
+      POSTGRES_DB: postgres # Maintenance database, pgadmin connection
     ports:
-      - "5434:5432" # Port 5432, pgadmin connection
+      - "5434:5432" # Port 5432 loalhost, port 5432 pgadmin connection
     volumes:
       - ./sql/create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
       - ./sql/data.sql:/docker-entrypoint-initdb.d/data.sql
@@ -22,4 +23,4 @@ services:
       ports:
         - '81:80' # Port 80, web browser access http://localhost:81
       depends_on:
-        - postgresql  
+        - authentication  

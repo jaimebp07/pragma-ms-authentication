@@ -27,4 +27,9 @@ public class UserRepositoryAdapter extends ReactiveAdapterOperations<User, UserE
     public Mono<User> save(User user) {
         return super.save(user);
     }
+
+    @Override
+    public Mono<User> findById(UUID id) {
+        return super.findById(id);
+    }
 }

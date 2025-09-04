@@ -27,7 +27,7 @@ adapters:
   r2dbc:
     host: localhost
     port: 5434
-    database: users_db
+    database: postgres
     schema: credi_ya
-    username: myuser
-    password: mypassword
+    username: admin
+    password: authentication
