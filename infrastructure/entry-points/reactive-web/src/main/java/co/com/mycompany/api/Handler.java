@@ -28,7 +28,7 @@ public class Handler {
 
         public Mono<ServerResponse> handleRegisterUser(ServerRequest serverRequest) {
                 return serverRequest.bodyToMono(UserDTO.class)
-                        .doOnNext(dto -> log.info("📥 Request received: {}", dto))
+                        .doOnNext(dto -> log.info("Request received: {}", dto))
                         .map(userMapper::toDomain)
                         .flatMap(registerUserUseCase::registerUser)
                         .map(userMapper::toDTO)
@@ -36,17 +36,17 @@ public class Handler {
                                 .created(serverRequest.uri())
                                 .bodyValue(userDTO)
                         )
-                        .doOnSuccess(resp -> log.info("✅ Response created successfully"))
-                        .doOnError(ex -> log.error("❌ Error in the handler", ex))
+                        .doOnSuccess(resp -> log.info("Response created successfully"))
+                        .doOnError(ex -> log.error("Error in the handler", ex))
                         .onErrorResume(BusinessException.class, ex -> {
-                                log.warn("⚠️ business mistake: {}", ex.getMessage());
+                                log.warn("Business mistake: {}", ex.getMessage());
                                 return ServerResponse.status(HttpStatus.BAD_REQUEST)
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .bodyValue(new ErrorResponse("BUSINESS_ERROR", ex.getMessage()));
                                 }
                         )
                         .onErrorResume(Exception.class, ex -> {
-                                log.error("💥 Unexpected error: ", ex);
+                                log.error("Unexpected error: ", ex);
                                 return ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .bodyValue(new ErrorResponse("INTERNAL_ERROR", "Unexpected error occurred"));

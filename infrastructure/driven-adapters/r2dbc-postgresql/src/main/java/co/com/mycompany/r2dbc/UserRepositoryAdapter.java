@@ -32,4 +32,10 @@ public class UserRepositoryAdapter extends ReactiveAdapterOperations<User, UserE
     public Mono<User> findById(UUID id) {
         return super.findById(id);
     }
+
+    @Override
+    public Mono<String> login(String email, String password) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'login'");
+    }
 }

@@ -81,10 +81,11 @@ public class RouterRest {
             )
         )
     })
-    RouterFunction<ServerResponse> routerFunction(Handler handler) {
-        return RouterFunctions.nest(path("/api/v1/usuarios"),
-            route(POST(""), handler::handleRegisterUser)
-            .andRoute(GET("/{id}"), handler::handleGetUserById)
+    RouterFunction<ServerResponse> routerFunction(Handler handler, AuthHandler authHandler) {
+        return RouterFunctions.nest(path("/api/v1"),
+            route(POST("/usuarios"), handler::handleRegisterUser)
+            .andRoute(POST("/login"), authHandler::handleLogin)
+            .andRoute(GET("/usuarios/{id}"), handler::handleGetUserById)
         );
     }
 }

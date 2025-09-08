@@ -31,3 +31,7 @@ adapters:
     schema: credi_ya
     username: admin
     password: authentication
+
+jwt:
+  secret: mySecretKeyForJWTGeneration
+  expiration: 3600
