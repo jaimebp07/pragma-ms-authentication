@@ -4,6 +4,7 @@ import co.com.mycompany.api.Handler;
 import co.com.mycompany.api.RouterRest;
 import co.com.mycompany.api.mapper.UserMapper;
 import co.com.mycompany.usecase.registeruser.RegisterUserUseCase;
+import co.com.mycompany.usecase.userexists.UserExistsUseCase;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ class ConfigTest {
 
     @MockitoBean 
     private RegisterUserUseCase registerUserUseCase;
+
+    @MockitoBean 
+    private UserExistsUseCase userExistsUseCase;
 
     @MockitoBean
     private UserMapper userMapper;
