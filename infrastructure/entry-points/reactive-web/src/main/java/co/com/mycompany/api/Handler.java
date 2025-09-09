@@ -39,7 +39,7 @@ public class Handler {
                         .doOnSuccess(resp -> log.info("Response created successfully"))
                         .doOnError(ex -> log.error("Error in the handler", ex))
                         .onErrorResume(BusinessException.class, ex -> {
-                                log.warn("Business mistake: {}", ex.getMessage());
+                                log.warn("business mistake: {}", ex.getMessage());
                                 return ServerResponse.status(HttpStatus.BAD_REQUEST)
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .bodyValue(new ErrorResponse("BUSINESS_ERROR", ex.getMessage()));

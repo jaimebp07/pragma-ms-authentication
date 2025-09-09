@@ -66,7 +66,13 @@ public class RouterRest {
                 description = "Obtiene un usuario existente a partir de su identificador único",
                 tags = { "Usuarios" },
                 parameters = {
-                    @Parameter(name = "id", description = "Identificador único del usuario", required = true)
+                    @Parameter(
+                        name = "id",
+                        description = "Identificador único del usuario",
+                        required = true,
+                        in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+                        schema = @Schema(type = "string", format = "uuid")
+                    )
                 },
                 responses = {
                     @ApiResponse(responseCode = "200", description = "Usuario encontrado",
