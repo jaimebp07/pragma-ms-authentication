@@ -8,13 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
-import co.com.mycompany.model.authentication.TokenService;
+import co.com.mycompany.model.gateways.TokenServiceGateway;
 import co.com.mycompany.model.user.User;
 import co.com.mycompany.security.jwt.extractor.JwtRoleExtractor;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 import javax.crypto.SecretKey;  
@@ -24,7 +23,7 @@ import javax.crypto.SecretKey;
  * Genera y valida tokens de forma reactiva en el microservicio de autenticación.
  */
 //@Component
-public class JwtProvider implements TokenService {
+public class JwtProvider implements TokenServiceGateway {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtProvider.class);
     private final JwtRoleExtractor roleExtractor;
@@ -42,7 +41,6 @@ public class JwtProvider implements TokenService {
     public String generateToken(User user) {
         Instant now = Instant.now();
         Instant exp = now.plusSeconds(expiration);
-
         List<String> roles = user.getRoles().stream()
                 .map(Enum::name)
                 .toList();
@@ -62,9 +60,8 @@ public class JwtProvider implements TokenService {
         return roleExtractor.extractRoles(claims);
     }
 
-    private SecretKey getKey(String secret) {  
-        byte[] secretBytes = Decoders.BASE64URL.decode(secret);  
-        return Keys.hmacShaKeyFor(secretBytes);  
+    private SecretKey getKey(String secret) {
+        return Keys.hmacShaKeyFor(secret.getBytes());
     }  
 
     public boolean validate(String token) {

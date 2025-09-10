@@ -1,4 +1,4 @@
--- Crear esquema si no existe
+ -- Crear esquema si no existe
 CREATE SCHEMA IF NOT EXISTS credi_ya;
 
 -- Crear tabla users
@@ -10,7 +10,9 @@ CREATE TABLE IF NOT EXISTS credi_ya.users (
     address VARCHAR(255),
     phone_number VARCHAR(20),
     email VARCHAR(150) UNIQUE NOT NULL,
-    base_salary NUMERIC(15,2) NOT NULL,   -- BigDecimal -> NUMERIC/DECIMAL
+    base_salary NUMERIC(15,2) NOT NULL,
+    roles TEXT[] NOT NULL DEFAULT '{}',
+    password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
 );

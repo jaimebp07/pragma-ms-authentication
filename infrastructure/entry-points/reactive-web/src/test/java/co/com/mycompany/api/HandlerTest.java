@@ -35,7 +35,7 @@ class HandlerTest {
             @Override
             public UserDTO toDTO(User domain) {
                 return new UserDTO(domain.getFirstName(), domain.getLastName(), domain.getBirthDate(),
-                        domain.getAddress(), domain.getPhoneNumber(), domain.getEmail(), domain.getBaseSalary());
+                        domain.getAddress(), domain.getPhoneNumber(), domain.getEmail(), domain.getBaseSalary(), domain.getRoles(), domain.getPassword());
             }
         };
         handler = new Handler(registerUserUseCase, userMapper, userExistsUseCase);

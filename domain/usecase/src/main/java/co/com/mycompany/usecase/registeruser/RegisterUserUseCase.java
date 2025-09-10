@@ -22,6 +22,7 @@ public class  RegisterUserUseCase {
         public Mono<User> registerUser(User user) {
                 return transactionalGateway.execute(
                         Mono.fromCallable(() -> {
+                                System.out.println("--------------> user roles "+ user.getRoles() + " password " + user.getPassword());
                                 UserValidator.validate(user);
                                 return user;
                         })

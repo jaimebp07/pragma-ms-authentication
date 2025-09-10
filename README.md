@@ -57,6 +57,10 @@ Este m�dulo es el m�s externo de la arquitectura, es el encargado de ensambl
         "address": "Calle 123 #45-67",
         "phoneNumber": "3001234567",
         "email": "andres.perez@example.com",
-        "baseSalary": 2500000.50
+        "baseSalary": 2500000.50,
+        "roles": [
+            "ADMIN"
+        ],
+        "password": "123456"
     }
     ```

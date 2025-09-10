@@ -33,5 +33,10 @@ adapters:
     password: authentication
 
 jwt:
-  secret: mySecretKeyForJWTGeneration
+  secret: miClaveSuperSecretaConAlMenos32Caracteres123!
   expiration: 3600
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.web.server: DEBUG

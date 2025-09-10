@@ -2,6 +2,7 @@ package co.com.mycompany.r2dbc.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
@@ -38,5 +39,10 @@ public class UserEntity {
 
     @Column("base_salary")
     private BigDecimal baseSalary;
-    
+
+    @Column("roles")
+    private List<String> roles;
+
+    @Column("password")
+    private String password;
 }
