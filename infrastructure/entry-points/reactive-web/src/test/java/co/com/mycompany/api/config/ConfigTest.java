@@ -1,8 +1,10 @@
 package co.com.mycompany.api.config;
 
+import co.com.mycompany.api.AuthHandler;
 import co.com.mycompany.api.Handler;
 import co.com.mycompany.api.RouterRest;
 import co.com.mycompany.api.mapper.UserMapper;
+import co.com.mycompany.usecase.login.LogInUseCase;
 import co.com.mycompany.usecase.registeruser.RegisterUserUseCase;
 import co.com.mycompany.usecase.userexists.UserExistsUseCase;
 
@@ -14,7 +16,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-@ContextConfiguration(classes = {RouterRest.class, Handler.class})
+@ContextConfiguration(classes = {
+    RouterRest.class,
+    Handler.class,
+    AuthHandler.class,
+    TestSecurityConfig.class
+})
 @WebFluxTest
 @Import({CorsConfig.class, SecurityHeadersConfig.class})
 class ConfigTest {
@@ -24,6 +31,9 @@ class ConfigTest {
 
     @MockitoBean 
     private UserExistsUseCase userExistsUseCase;
+
+    @MockitoBean 
+    private LogInUseCase logInUseCase;
 
     @MockitoBean
     private UserMapper userMapper;
