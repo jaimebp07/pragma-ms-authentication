@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -26,6 +27,7 @@ public class Handler {
         private final UserMapper userMapper;
         private final UserExistsUseCase userExistsUseCase;
 
+        @PreAuthorize("hasAnyAuthority('ADMIN','ADVISOR')")
         public Mono<ServerResponse> handleRegisterUser(ServerRequest serverRequest) {
                 return serverRequest.bodyToMono(UserDTO.class)
                         .doOnNext(dto -> log.info("Request received: {}", dto))
@@ -54,32 +56,33 @@ public class Handler {
                         );
         }
     
+        //@PreAuthorize("hasAnyAuthority('CLIENT')")
         public Mono<ServerResponse> handleGetUserById(ServerRequest serverRequest) {
-    
-        UUID id = UUID.fromString(serverRequest.pathVariable("id"));
+        
+                UUID id = UUID.fromString(serverRequest.pathVariable("id"));
 
-        return userExistsUseCase.userExists(id)
-                .flatMap(exists -> {
-                        if (exists) {
-                        return ServerResponse.ok()
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .bodyValue(new ExistsResponse(true, "User exists"));
-                        } else {
-                        return ServerResponse.status(HttpStatus.NOT_FOUND)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .bodyValue(new ExistsResponse(false, "User not found"));
-                        }
-                })
-                .onErrorResume(BusinessException.class, ex ->
-                        ServerResponse.status(HttpStatus.BAD_REQUEST)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .bodyValue(new ErrorResponse("BUSINESS_ERROR", ex.getMessage()))
-                )
-                .onErrorResume(Exception.class, ex ->
-                        ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .bodyValue(new ErrorResponse("INTERNAL_ERROR", "Unexpected error occurred"))
-                );
+                return userExistsUseCase.userExists(id)
+                        .flatMap(exists -> {
+                                if (exists) {
+                                return ServerResponse.ok()
+                                        .contentType(MediaType.APPLICATION_JSON)
+                                        .bodyValue(new ExistsResponse(true, "User exists"));
+                                } else {
+                                return ServerResponse.status(HttpStatus.NOT_FOUND)
+                                        .contentType(MediaType.APPLICATION_JSON)
+                                        .bodyValue(new ExistsResponse(false, "User not found"));
+                                }
+                        })
+                        .onErrorResume(BusinessException.class, ex ->
+                                ServerResponse.status(HttpStatus.BAD_REQUEST)
+                                        .contentType(MediaType.APPLICATION_JSON)
+                                        .bodyValue(new ErrorResponse("BUSINESS_ERROR", ex.getMessage()))
+                        )
+                        .onErrorResume(Exception.class, ex ->
+                                ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                        .contentType(MediaType.APPLICATION_JSON)
+                                        .bodyValue(new ErrorResponse("INTERNAL_ERROR", "Unexpected error occurred"))
+                        );
         }
 
         private record ExistsResponse(boolean exists, String message) {}

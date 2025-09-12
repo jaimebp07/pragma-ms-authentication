@@ -8,6 +8,8 @@ import static org.mockito.Mockito.when;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +20,17 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
+import co.com.mycompany.api.config.TestSecurityConfig;
 import co.com.mycompany.api.dto.UserDTO;
 import reactor.core.publisher.Mono;
 
 
-@ContextConfiguration(classes = {RouterRest.class, Handler.class})
+@ContextConfiguration(classes = {
+    RouterRest.class,
+    Handler.class,
+    AuthHandler.class,
+    TestSecurityConfig.class    // <--- agregar
+})
 @WebFluxTest
 class RouterRestTest {
 
@@ -32,8 +40,14 @@ class RouterRestTest {
     @MockitoBean
     private Handler handler;
 
+    @MockitoBean
+    private  AuthHandler authHandler;
+
     @Test
     void testRegisterUser() {
+        List<String> roles = new ArrayList<>();
+        roles.add("ADMIN");
+
         UserDTO userDto = new UserDTO(
             "Andres",
             "Lopez",
@@ -41,7 +55,9 @@ class RouterRestTest {
             "Calle 123",
             "3001234567",
             "test@example.com",
-            BigDecimal.valueOf(3000)
+            BigDecimal.valueOf(3000),
+            roles,
+            "12345678"
         );
 
         when(handler.handleRegisterUser(any()))

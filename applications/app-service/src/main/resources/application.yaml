@@ -31,3 +31,12 @@ adapters:
     schema: credi_ya
     username: admin
     password: authentication
+
+jwt:
+  secret: miClaveSuperSecretaConAlMenos32Caracteres123!
+  expiration: 3600
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.web.server: DEBUG

@@ -12,4 +12,5 @@ public interface UserRepositoryGateway {
     Mono<User> findByEmail(String email);
     Mono<User> save(User user);
     Mono<User> findById(UUID id);
+    Mono<String> login(String email, String password);
 }

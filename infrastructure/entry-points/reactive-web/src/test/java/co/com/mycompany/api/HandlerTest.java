@@ -1,20 +1,21 @@
 package co.com.mycompany.api;
 
 import co.com.mycompany.api.dto.UserDTO;
+import co.com.mycompany.model.authentication.Role;
 import co.com.mycompany.model.user.User;
 import co.com.mycompany.usecase.registeruser.RegisterUserUseCase;
 import co.com.mycompany.usecase.userexists.UserExistsUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import co.com.mycompany.api.mapper.UserMapper;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
-import co.com.mycompany.api.Handler;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -34,8 +35,20 @@ class HandlerTest {
         userMapper = new UserMapper() {
             @Override
             public UserDTO toDTO(User domain) {
-                return new UserDTO(domain.getFirstName(), domain.getLastName(), domain.getBirthDate(),
-                        domain.getAddress(), domain.getPhoneNumber(), domain.getEmail(), domain.getBaseSalary());
+                List<String> roleNames = domain.getRoles().stream()
+                                       .map(Role::name) // o getNombre() según tu enum/clase
+                                       .toList();
+                return new UserDTO(
+                    domain.getFirstName(),
+                    domain.getLastName(),
+                    domain.getBirthDate(),
+                    domain.getAddress(),
+                    domain.getPhoneNumber(),
+                    domain.getEmail(),
+                    domain.getBaseSalary(),
+                    roleNames,
+                    domain.getPassword()
+                );
             }
         };
         handler = new Handler(registerUserUseCase, userMapper, userExistsUseCase);
@@ -46,7 +59,9 @@ class HandlerTest {
 
     @Test
     void testHandleRegisterUser_Success() {
-        UserDTO userDTO = new UserDTO("Juan", "Perez", null, "Address", "123456", "juan@example.com", null);
+        List<String> roles = new ArrayList<>();
+        roles.add("ADMIN");
+        UserDTO userDTO = new UserDTO("Juan", "Perez", null, "Address", "123456", "juan@example.com", null, roles, "12345678");
         User user = new User.Builder()
                 .firstName("Juan").lastName("Perez").email("juan@example.com").build();
 
@@ -62,7 +77,9 @@ class HandlerTest {
 
     @Test
     void testHandleRegisterUser_BusinessException() {
-        UserDTO userDTO = new UserDTO("Juan", "Perez", null, "Address", "123456", "juan@example.com", null);
+        List<String> roles = new ArrayList<>();
+        roles.add("ADMIN");
+        UserDTO userDTO = new UserDTO("Juan", "Perez", null, "Address", "123456", "juan@example.com", null, roles, "12345678");
         when(serverRequest.bodyToMono(UserDTO.class)).thenReturn(Mono.just(userDTO));
         when(registerUserUseCase.registerUser(any(User.class)))
                 .thenReturn(Mono.error(new RuntimeException("Business error")));
