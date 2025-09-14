@@ -9,7 +9,7 @@ VALUES
         'Calle 123', '3001234567', 'andres@example.com',
         3500000.00,
         ARRAY['CLIENT'], -- roles como array
-        '$2a$10$W7sYfQvJpT9V1nKfYwFfhe8gY.xcvK0hWYt9X3QF5.qnUVRtxlIz6' -- hash de "123456"
+        '$2a$10$yfVHJzN6ldQNeCnwHDi9T.C79mkaGs.oyqvEMYITvby/0qL32bCB.'  -- hash de "123456"
     ),
     (
         gen_random_uuid(),
@@ -17,5 +17,5 @@ VALUES
         'Carrera 45 #12-34', '3109876543', 'maria@example.com',
         4200000.50,
         ARRAY['ADVISOR'],
-        '$2a$10$KIXnDbP0vJo3Z9l7AqzMMeJcUODpF1aT1ybP7kMnnp7xFQxy38x1i' -- hash de "password"
+        '$2a$10$SLi7Fidu0lZ/LTqphGrBIOaEf90zaTVks2XSwx2wTRNTC9ntnwXpO'  -- hash de "123456"
     );
