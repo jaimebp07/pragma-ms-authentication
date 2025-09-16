@@ -203,6 +203,7 @@ public class RouterRest {
             route(POST("/usuarios"), handler::handleRegisterUser)
             .andRoute(POST("/login"), authHandler::handleLogin)
             .andRoute(GET("/usuarios/{id}/exists"), handler::handleGetUserById)
+            .andRoute (POST("/usuarios/page"), handler::handleGetUserByListId)
         );
     }
 }
