@@ -1,5 +1,6 @@
 package co.com.mycompany.r2dbc;
 
+import java.util.Collection;
 import java.util.UUID;
 
 import org.springframework.data.repository.query.ReactiveQueryByExampleExecutor;
@@ -13,5 +14,5 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface UserReactiveRepository extends ReactiveCrudRepository<UserEntity, UUID>, ReactiveQueryByExampleExecutor<UserEntity> {
     Mono<UserEntity> findByEmail(String email);
-    Flux<UserEntity> findAllByIdIn(Iterable<UUID> ids);
+    Flux<UserEntity> findAllByIdIn(Collection<UUID> ids);
 }
