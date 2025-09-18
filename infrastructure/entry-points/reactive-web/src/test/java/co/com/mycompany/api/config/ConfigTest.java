@@ -3,7 +3,9 @@ package co.com.mycompany.api.config;
 import co.com.mycompany.api.AuthHandler;
 import co.com.mycompany.api.Handler;
 import co.com.mycompany.api.RouterRest;
+import co.com.mycompany.api.mapper.CustomerMapper;
 import co.com.mycompany.api.mapper.UserMapper;
+import co.com.mycompany.usecase.getlistusers.GetListUsersUseCase;
 import co.com.mycompany.usecase.login.LogInUseCase;
 import co.com.mycompany.usecase.registeruser.RegisterUserUseCase;
 import co.com.mycompany.usecase.userexists.UserExistsUseCase;
@@ -37,6 +39,12 @@ class ConfigTest {
 
     @MockitoBean
     private UserMapper userMapper;
+
+    @MockitoBean
+    private GetListUsersUseCase getListUsersUseCase;
+
+    @MockitoBean
+    private CustomerMapper customerMapper;
 
     @Autowired
     private WebTestClient webTestClient;

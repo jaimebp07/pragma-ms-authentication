@@ -6,6 +6,8 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
+import co.com.mycompany.api.dto.CustomerRsDTO;
+import co.com.mycompany.api.dto.GetListUsersRqDTO;
 import co.com.mycompany.api.dto.LoginRqDTO;
 import co.com.mycompany.api.dto.UserDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -196,6 +198,68 @@ public class RouterRest {
                     )
                 }
             )
+        ),
+        @RouterOperation(
+            path = "/api/v1/usuarios/page",
+            produces = { "application/json" },
+            consumes = { "application/json" },
+            beanClass = Handler.class,
+            beanMethod = "handleGetUserByListId",
+            operation = @Operation(
+                operationId = "getUsersByListId",
+                summary = "Obtener usuarios por listado de IDs",
+                description = "Recibe un conjunto de UUIDs y devuelve los datos básicos de cada usuario (CustomerRsDTO).",
+                tags = { "Usuarios" },
+                security = {
+                    @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "bearerAuth")
+                },
+                requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    required = true,
+                    description = "Listado de identificadores de usuario a consultar",
+                    content = @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(implementation = GetListUsersRqDTO.class),
+                        examples = {
+                            @ExampleObject(
+                                name = "Ejemplo petición",
+                                value = """
+                                    {
+                                    "listUserIds": [
+                                        "550e8400-e29b-41d4-a716-446655440000",
+                                        "550e8400-e29b-41d4-a716-446655440111"
+                                    ]
+                                    }
+                                    """
+                            )
+                        }
+                    )
+                ),
+                responses = {
+                    @ApiResponse(
+                        responseCode = "200",
+                        description = "Lista de usuarios encontrada",
+                        content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = CustomerRsDTO.class)
+                        )
+                    ),
+                    @ApiResponse(
+                        responseCode = "400",
+                        description = "Error de validación",
+                        content = @Content(schema = @Schema(example = "{\"code\":\"BUSINESS_ERROR\", \"message\":\"Algún ID no es válido\"}"))
+                    ),
+                    @ApiResponse(
+                        responseCode = "401",
+                        description = "No autorizado, token inválido o ausente",
+                        content = @Content(schema = @Schema(example = "{\"code\":\"UNAUTHORIZED\", \"message\":\"Invalid or missing token\"}"))
+                    ),
+                    @ApiResponse(
+                        responseCode = "500",
+                        description = "Error interno",
+                        content = @Content(schema = @Schema(example = "{\"code\":\"INTERNAL_ERROR\", \"message\":\"Unexpected error occurred\"}"))
+                    )
+                }
+            )
         )
     })
     RouterFunction<ServerResponse> routerFunction(Handler handler, AuthHandler authHandler) {
@@ -203,6 +267,7 @@ public class RouterRest {
             route(POST("/usuarios"), handler::handleRegisterUser)
             .andRoute(POST("/login"), authHandler::handleLogin)
             .andRoute(GET("/usuarios/{id}/exists"), handler::handleGetUserById)
+            .andRoute (POST("/usuarios/page"), handler::handleGetUserByListId)
         );
     }
 }

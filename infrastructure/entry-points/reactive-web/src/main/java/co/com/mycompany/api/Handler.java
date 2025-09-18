@@ -12,9 +12,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
+import co.com.mycompany.api.mapper.CustomerMapper;
 import co.com.mycompany.api.mapper.UserMapper;
 import co.com.mycompany.model.exceptions.BusinessException;
+import co.com.mycompany.api.dto.GetListUsersRqDTO;
 import co.com.mycompany.api.dto.UserDTO;
+import co.com.mycompany.usecase.getlistusers.GetListUsersUseCase;
 import co.com.mycompany.usecase.registeruser.RegisterUserUseCase;
 import co.com.mycompany.usecase.userexists.UserExistsUseCase;
 
@@ -26,6 +29,8 @@ public class Handler {
         private  final RegisterUserUseCase registerUserUseCase;
         private final UserMapper userMapper;
         private final UserExistsUseCase userExistsUseCase;
+        private final GetListUsersUseCase getListUsersUseCase;
+        private final CustomerMapper customerMapper;
 
         @PreAuthorize("hasAnyAuthority('ADMIN','ADVISOR')")
         public Mono<ServerResponse> handleRegisterUser(ServerRequest serverRequest) {
@@ -82,6 +87,29 @@ public class Handler {
                                 ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR)
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .bodyValue(new ErrorResponse("INTERNAL_ERROR", "Unexpected error occurred"))
+                        );
+        }
+
+        @PreAuthorize("hasAnyAuthority('ADVISOR')")
+        public Mono<ServerResponse> handleGetUserByListId(ServerRequest serverRequest) {
+
+                return serverRequest.bodyToMono(GetListUsersRqDTO.class)
+                        .doOnNext(dto -> log.info("Request received: {}", dto))
+                        .flatMap(dto -> 
+                                getListUsersUseCase.getListUsers(dto.listUserIds())
+                                        .map(customerMapper::toCustomerDtoSet)
+                                        .flatMap(users -> ServerResponse
+                                                .ok()
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .bodyValue(users)
+                                        )
+                        )
+                        .onErrorResume(Exception.class, ex -> {
+                                log.error("Unexpected error: ", ex);
+                                return ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                        .contentType(MediaType.APPLICATION_JSON)
+                                        .bodyValue(new ErrorResponse("INTERNAL_ERROR", "Unexpected error occurred"));
+                                }
                         );
         }
 
