@@ -1,0 +1,43 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: "msUsers"
+  devtools:
+    add-properties: false
+  h2:
+    console:
+      enabled: true
+      path: "/h2"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,prometheus"
+  endpoint:
+    health:
+      probes:
+        enabled: true
+        
+cors:
+  allowed-origins: "http://localhost:4200,http://localhost:8080"
+
+adapters:
+  r2dbc:
+    host: ${DB_HOST:postgres-auth}
+    port: ${DB_PORT:5432}
+    database: ${DB_NAME:postgres}
+    schema: ${DB_SCHEMA:credi_ya}
+    username: ${DB_USER:admin}
+    password: ${DB_PASSWORD:authentication}
+
+jwt:
+  secret: miClaveSuperSecretaConAlMenos32Caracteres123!
+  expiration: 3600
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.web.server: DEBUG
