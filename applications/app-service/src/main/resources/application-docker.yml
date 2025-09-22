@@ -1,5 +1,6 @@
 server:
   port: 8080
+
 spring:
   application:
     name: "msUsers"
@@ -9,8 +10,7 @@ spring:
     console:
       enabled: true
       path: "/h2"
-  profiles:
-    include: null
+
 management:
   endpoints:
     web:
@@ -20,17 +20,18 @@ management:
     health:
       probes:
         enabled: true
+        
 cors:
   allowed-origins: "http://localhost:4200,http://localhost:8080"
 
 adapters:
   r2dbc:
-    host: localhost
-    port: 5434
-    database: postgres
-    schema: credi_ya
-    username: admin
-    password: db_authentication
+    host: ${DB_HOST:postgres-auth}
+    port: ${DB_PORT:5432}
+    database: ${DB_NAME:postgres}
+    schema: ${DB_SCHEMA:credi_ya}
+    username: ${DB_USER:admin}
+    password: ${DB_PASSWORD:db_authentication}
 
 jwt:
   secret: miClaveSuperSecretaConAlMenos32Caracteres123!

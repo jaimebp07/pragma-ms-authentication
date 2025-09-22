@@ -1,4 +1,6 @@
- -- Crear esquema si no existe
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+-- Crear esquema si no existe
 CREATE SCHEMA IF NOT EXISTS credi_ya;
 
 -- Crear tabla users

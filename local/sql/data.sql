@@ -38,3 +38,4 @@ VALUES
     ('c3d2a55e-12f8-4b3a-82c7-2c9d174f91ee', 'Felipe',  'Castro',   '1989-01-14', 'Cra 50 #10-90',  '3078889900', 'felipe.castro@example.com',  2700000.00, ARRAY['CLIENT'], '$2a$10$eTldV0pvdtWeg8o/7RlDYepSLebciKNQBaU9ALOSx1gejO76jsq5e'),
     ('da187d87-1dc1-40fd-a2f0-3ac91a8f80fb', 'Diana',   'Vargas',   '1994-08-25', 'Calle 70 #9-66', '3089990011', 'diana.vargas@example.com',   3300000.25, ARRAY['CLIENT'], '$2a$10$eTldV0pvdtWeg8o/7RlDYepSLebciKNQBaU9ALOSx1gejO76jsq5e'),
     ('f5a31f6e-cd3f-44f7-bf11-0dbad81b5b59', 'Mateo',   'Torres',   '1996-02-17', 'Carrera 100 #22-33','3090001122','mateo.torres@example.com', 2600000.00, ARRAY['CLIENT'], '$2a$10$eTldV0pvdtWeg8o/7RlDYepSLebciKNQBaU9ALOSx1gejO76jsq5e');
+    
