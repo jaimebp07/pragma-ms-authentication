@@ -90,7 +90,7 @@ public class Handler {
                         );
         }
 
-        @PreAuthorize("hasAnyAuthority('ADVISOR')")
+        @PreAuthorize("hasAnyAuthority('ADVISOR', 'CLIENT')")
         public Mono<ServerResponse> handleGetUserByListId(ServerRequest serverRequest) {
 
                 return serverRequest.bodyToMono(GetListUsersRqDTO.class)
