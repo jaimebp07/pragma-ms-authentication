@@ -12,7 +12,7 @@ buildCache {
     }
 }
 
-rootProject.name = 'msUsers'
+rootProject.name = 'ms_authentication'
 
 include ':app-service'
 include ':model'

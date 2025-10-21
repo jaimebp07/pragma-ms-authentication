@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: "msUsers"
+    name: "ms_authentication"
   devtools:
     add-properties: false
   h2:

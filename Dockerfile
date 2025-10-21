@@ -11,7 +11,7 @@ FROM eclipse-temurin:17-jre-alpine
 RUN apk add --no-cache netcat-openbsd
 
 WORKDIR /app
-COPY --from=build /home/gradle/project/applications/app-service/build/libs/msUsers.jar app.jar
+COPY --from=build /home/gradle/project/applications/app-service/build/libs/ms_authentication.jar app.jar
 
 # wait-for-postgres.sh debe estar guardado en LF
 COPY wait-for-postgres.sh /wait-for-postgres.sh 
