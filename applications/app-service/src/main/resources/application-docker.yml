@@ -31,7 +31,7 @@ adapters:
     database: ${DB_NAME:postgres}
     schema: ${DB_SCHEMA:credi_ya}
     username: ${DB_USER:admin}
-    password: ${DB_PASSWORD:db_authentication}
+    password: ${DB_PASSWORD:dbauthentication}
 
 jwt:
   secret: miClaveSuperSecretaConAlMenos32Caracteres123!

@@ -30,7 +30,7 @@ adapters:
     database: postgres
     schema: credi_ya
     username: admin
-    password: db_authentication
+    password: dbauthentication
 
 jwt:
   secret: miClaveSuperSecretaConAlMenos32Caracteres123!
